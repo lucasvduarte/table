@@ -1,14 +1,9 @@
 import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
-import { TablePaginationPropse } from './TablePaginationProps';
+import { TablePaginationProps } from './interface/TablePaginationProps';
+import { DisplayedRows } from './interface/DisplayedRows';
 
-type DisplayedRows = {
-    from: number;
-    to: number;
-    count: number
-}
-
-export default function TablePaginationComponent(props: TablePaginationPropse) {
+export default function TablePaginationComponent(props: TablePaginationProps) {
 
     const { size, page, rowsPerPage, onChangePage, onChangeRowsPerPage } = props;
 

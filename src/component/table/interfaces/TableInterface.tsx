@@ -1,4 +1,4 @@
-export type Action = 'edit' | 'delete' | 'view' | 'action' | 'communities' | 'institution';
+export type Action = 'ACTION_EDIT' | 'ACTION_DELETE' | 'ACTION_VIEW' | 'ACTION';
 
 export type Order = 'asc' | 'desc';
 
@@ -9,9 +9,9 @@ export interface HeadCell {
     viewAttribute?: string;
 }
 
-export const ACTION_EDIT = 'edit';
-export const ACTION_DELETE = 'delete';
-export const ACTION_VIEW = 'view';
-export const ACTION = 'action';
-export const ACTION_COMMUNITIES = 'communities';
-export const ACTION_INSTITUTION = 'institution';
+export const ACTION_EDIT = 'ACTION_EDIT';
+export const ACTION_DELETE = 'ACTION_DELETE';
+export const ACTION_VIEW = 'ACTION_VIEW';
+export const ACTION = 'ACTION';
+export const ASC = 'asc';
+export const DESC = 'desc';

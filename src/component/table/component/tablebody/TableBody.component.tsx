@@ -1,19 +1,19 @@
 import React, { useState, ChangeEvent } from 'react';
 import { TableBody, TableCell, TableRow, TextField } from '@material-ui/core';
-import { Delete, Create, VisibilitySharp, Done, AccountBalance, Group, Close } from '@material-ui/icons';
+import { Delete, Create, VisibilitySharp, Done, Close } from '@material-ui/icons';
 import { Button } from '../Table';
-import { Action, ACTION_EDIT, ACTION_DELETE, ACTION_VIEW, ACTION, ACTION_COMMUNITIES, ACTION_INSTITUTION } from '../../interfaces/TableInterface';
+import { Action, ACTION_EDIT, ACTION_DELETE, ACTION_VIEW, ACTION } from '../../interfaces/TableInterface';
 import TableEmpty from './component/TableEmpty.component';
 import { TableBodyProps } from './interface/TableBody';
 import { HeadCell } from '../../interfaces/TableInterface';
 import { ValueEdit } from './interface/ValueEdit';
 import { createRow } from './component/CreateRow';
-import { FormatDate } from '../../../../utils/format/FormatDate';
+//import { FormatDate } from '../../../../utils/format/FormatDate';
 import ActionButton from './component/ActionButton.component';
 
 function TableBodyComponent(props: TableBodyProps) {
 
-    const { data, action, actionColumns, handleClickAction, headCells, noActionEdit, noActionDelete, noActionView, editable, actionCommunities, actionInstitution } = props;
+    const { data, actionColumns, handleClickAction, headCells, noActionEdit, noActionDelete, noActionView, editable } = props;
 
     const [newValue, setNewValue] = useState<ValueEdit>({ values: undefined, index: -1 });
     const [valuePrevious, setValuePrevious] = useState<any>({});
@@ -45,7 +45,9 @@ function TableBodyComponent(props: TableBodyProps) {
         setNewValue({ ...newValue, values: valueAux, index: index });
     }
 
-    const rowList: Array<HeadCell> = createRow([...headCells], action);
+    const rowList: Array<HeadCell> = createRow([...headCells]);
+
+    const action: boolean = [...headCells][headCells.length - 1].id === 'action';
 
     const viewAttribute = (obj: any, attribute: string): string => {
         return obj[attribute];
@@ -64,7 +66,7 @@ function TableBodyComponent(props: TableBodyProps) {
                         let value: string = row[keys.id];
 
                         if (keys.format?.includes('date')) {
-                            value = FormatDate(row[keys.id])
+                            value = ''//FormatDate(row[keys.id])
                         }
 
                         if (keys.viewAttribute) {
@@ -103,18 +105,6 @@ function TableBodyComponent(props: TableBodyProps) {
                             {(!noActionView && (index !== newValue.index)) &&
                                 <ActionButton title="Visualizar">
                                     <VisibilitySharp fontSize="small" color="primary" onClick={() => handleClick(ACTION_VIEW, row, index)} />
-                                </ActionButton>
-                            }
-
-                            {actionInstitution &&
-                                <ActionButton title="Instituições">
-                                    <AccountBalance fontSize="small" color="primary" onClick={() => handleClick(ACTION_INSTITUTION, row, index)} />
-                                </ActionButton>
-                            }
-
-                            {actionCommunities &&
-                                <ActionButton title="Comunidades">
-                                    <Group fontSize="small" color="primary" onClick={() => handleClick(ACTION_COMMUNITIES, row, index)} />
                                 </ActionButton>
                             }
 

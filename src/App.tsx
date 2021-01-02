@@ -1,26 +1,48 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { GlobalStyle } from './core/GlobalStyle';
-import Router from './core/Router';
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import Theme from './core/Theme';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import store from './store/store';
-
-toast.configure({
-  autoClose: 3000,
-  draggable: false
-});
+import React, { useState, MouseEvent } from 'react';
+import { Action, ACTION_EDIT, ACTION_DELETE, ACTION_VIEW } from './component/table/interfaces/TableInterface';
+import Table from './component/table/Table.component';
 
 function App() {
+
+  const [pagination, setPagination] = useState<any>({ page: 1, limit: 10, asc: 1, sort: 'id' });
+
+  const handleRequestSort = (event: MouseEvent<unknown>, property: string) => {
+    const isAsc = pagination.sort === property && pagination.asc === 1;
+    setPagination({ ...pagination, sort: property, asc: isAsc ? -1 : 1 });
+  };
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPagination({ ...pagination, page: newPage + 1 });
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPagination({ ...pagination, limit: +event.target.value, page: 1 });
+  };
+
+  const handleClickAction = (action: Action, obj: any) => {
+    if (action === ACTION_EDIT) {
+      return action;
+    }
+    if (action === ACTION_DELETE) {
+      return action;
+    }
+    if (action === ACTION_VIEW) {
+      return action;
+    }
+  };
   return (
-    <Provider store={store}>
-      <MuiThemeProvider theme={Theme}>
-        <GlobalStyle />
-        <Router />
-      </MuiThemeProvider>
-    </Provider>
+    <Table
+      data={[{ id: 0, nome: 'teste' }]}
+      headCells={[{ id: 'nome', label: 'Nome' }, { id: 'action', label: 'Ação' }]}
+      //page={pagination.page}
+      //rowsPerPage={pagination.limit}
+      //order={pagination.asc === 1 ? 'asc' : 'desc'}
+      // orderBy={pagination.sort}  
+      // onChangePage={handleChangePage}
+      // onChangeRowsPerPage={handleChangeRowsPerPage}
+      // onRequestSort={handleRequestSort}
+      handleClickAction={handleClickAction}
+    />
   );
 }
 

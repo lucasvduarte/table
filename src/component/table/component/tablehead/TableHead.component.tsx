@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { Span } from '../Table';
 import { TableHeadProps } from './TableHead';
+import { ASC, DESC } from '../../interfaces/TableInterface';
 
 function EnhancedTableHead(props: TableHeadProps) {
     const { order, orderBy, onRequestSort, headCells } = props;
 
-    const createSortHandler = (property: string) => (event: React.MouseEvent<unknown>) => {
+    const createSortHandler = (property: string) => (event: MouseEvent<unknown>) => {
         if (onRequestSort) {
             onRequestSort(event, property);
         }
@@ -22,13 +23,14 @@ function EnhancedTableHead(props: TableHeadProps) {
                     <TableCell key={headCell.id} >
                         <TableSortLabel
                             active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
+                            direction={orderBy === headCell.id ? order : ASC}
                             onClick={createSortHandler(headCell.id)}
+                            disabled={!order && !orderBy}
                         >
                             {headCell.label}
                             {(orderBy === headCell.id) ? (
                                 <Span>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                    {order === DESC ? 'sorted descending' : 'sorted ascending'}
                                 </Span>
                             ) : null}
                         </TableSortLabel>
