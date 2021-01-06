@@ -5,6 +5,7 @@ export interface TableProps {
     headCells: Array<HeadCell>;
     page?: number;
     rowsPerPage?: number;
+    size?: number;
     order?: Order;
     orderBy?: string;
     actionColumns?: number;

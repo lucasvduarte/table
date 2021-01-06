@@ -10,7 +10,7 @@ import TablePagination from './component/pagination/TablePagination.component';
 
 function TableComponent(props: TableProps) {
 
-    const { data, request, page, rowsPerPage } = props;
+    const { size, request, page, rowsPerPage } = props;
 
     if (request) {
         return <Progress open={request} />
@@ -24,7 +24,7 @@ function TableComponent(props: TableProps) {
                     <TableBody {...props} />
                 </Table>
             </TableContainer>
-            { (page && rowsPerPage) && <TablePagination page={page} rowsPerPage={rowsPerPage} size={data.length} {...props} />}
+            { (page && rowsPerPage) && <TablePagination size={size} page={page} rowsPerPage={rowsPerPage}   {...props} />}
         </PaperComponent>
     );
 }

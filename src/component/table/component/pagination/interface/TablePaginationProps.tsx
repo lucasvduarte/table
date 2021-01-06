@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 
 export interface TablePaginationProps {
-    size: number;
+    size?: number;
     page: number;
     rowsPerPage: number;
     onChangePage?(event: unknown, newPage: number): void;

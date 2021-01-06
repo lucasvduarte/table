@@ -4,7 +4,7 @@ import Table from './component/table/Table.component';
 
 function App() {
 
-  const [pagination, setPagination] = useState<any>({ page: 1, limit: 10, asc: 1, sort: 'id' });
+  const [pagination, setPagination] = useState<any>({ page: 0, limit: 10, asc: 1, sort: 'id' });
 
   const handleRequestSort = (event: MouseEvent<unknown>, property: string) => {
     const isAsc = pagination.sort === property && pagination.asc === 1;
@@ -12,11 +12,11 @@ function App() {
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPagination({ ...pagination, page: newPage + 1 });
+    setPagination({ ...pagination, page: newPage });
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPagination({ ...pagination, limit: +event.target.value, page: 1 });
+    setPagination({ ...pagination, limit: +event.target.value, page: 0 });
   };
 
   const handleClickAction = (action: Action, obj: any) => {
