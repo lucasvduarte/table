@@ -12,6 +12,7 @@ export interface TableProps {
     request?: boolean;
     noActionDelete?: boolean;
     noActionEdit?: boolean;
+    noAction?: boolean;
     noActionView?: boolean;
     editable?: boolean;
     onChangePage?(event: unknown, newPage: number): void;

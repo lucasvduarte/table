@@ -24,7 +24,7 @@ function TableComponent(props: TableProps) {
                     <TableBody {...props} />
                 </Table>
             </TableContainer>
-            { (page && rowsPerPage) && <TablePagination size={size} page={page} rowsPerPage={rowsPerPage}   {...props} />}
+            { ((page || page === 0) && rowsPerPage) && <TablePagination size={size} page={page} rowsPerPage={rowsPerPage}  {...props} />}
         </PaperComponent>
     );
 }

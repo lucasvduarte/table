@@ -8,8 +8,10 @@ import { TableBodyProps } from './interface/TableBody';
 import { HeadCell } from '../../interfaces/TableInterface';
 import { ValueEdit } from './interface/ValueEdit';
 import { createRow } from './component/CreateRow';
-//import { FormatDate } from '../../../../utils/format/FormatDate';
 import ActionButton from './component/ActionButton.component';
+import { FormatDate } from './format/FormatDate';
+import ViewAttribute from './format/ViewAttribute';
+import ViewAttributeBoolean from './format/ViewAttributeBoolean';
 
 function TableBodyComponent(props: TableBodyProps) {
 
@@ -49,10 +51,6 @@ function TableBodyComponent(props: TableBodyProps) {
 
     const action: boolean = [...headCells][headCells.length - 1].id === ACTION;
 
-    const viewAttribute = (obj: any, attribute: string): string => {
-        return obj[attribute];
-    }
-
     if (![...data].length) {
         return <TableEmpty />
     }
@@ -66,11 +64,16 @@ function TableBodyComponent(props: TableBodyProps) {
                         let value: string = row[keys.id];
 
                         if (keys.format?.includes('date')) {
-                            value = ''//FormatDate(row[keys.id])
+                            value = FormatDate(row[keys.id])
                         }
 
                         if (keys.viewAttribute) {
-                            value = viewAttribute(row[keys.id], keys.viewAttribute);
+                            value = ViewAttribute(row[keys.id], keys.viewAttribute);
+                        }
+
+
+                        if (keys.viewAttributeBoolean) {
+                            value = ViewAttributeBoolean(row[keys.id], keys.viewAttributeBoolean);
                         }
 
                         if (editable && index === newValue.index) {

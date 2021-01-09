@@ -8,5 +8,6 @@ export interface TableBodyProps {
     noActionDelete?: boolean;
     noActionEdit?: boolean;
     noActionView?: boolean;
+    noAction?: boolean;
     editable?: boolean;
 }
