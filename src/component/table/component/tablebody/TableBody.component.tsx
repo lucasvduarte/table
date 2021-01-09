@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import { TableBody, TableCell, TableRow, TextField } from '@material-ui/core';
+import { TableBody, TableRow, TextField } from '@material-ui/core';
 import { Delete, Create, VisibilitySharp, Done, Close } from '@material-ui/icons';
 import { Button } from '../Table';
 import { Action, ACTION_EDIT, ACTION_DELETE, ACTION_VIEW, ACTION } from '../../interfaces/TableInterface';
@@ -9,9 +9,8 @@ import { HeadCell } from '../../interfaces/TableInterface';
 import { ValueEdit } from './interface/ValueEdit';
 import { createRow } from './component/CreateRow';
 import ActionButton from './component/ActionButton.component';
-import { FormatDate } from './format/FormatDate';
-import ViewAttribute from './format/ViewAttribute';
-import ViewAttributeBoolean from './format/ViewAttributeBoolean';
+import formatValues from './format/FormatValues';
+import { TableCellComponent } from './component/TableCell';
 
 function TableBodyComponent(props: TableBodyProps) {
 
@@ -59,70 +58,52 @@ function TableBodyComponent(props: TableBodyProps) {
         <TableBody>
             {[...data].map((row: any, index: number) => (
                 <TableRow key={`TableRow-${index}`}>
+
                     {rowList.map((keys: HeadCell, indexKeys: number) => {
-                        let actionRow: boolean = !!actionColumns && actionColumns === indexKeys + 1;
-                        let value: string = row[keys.id];
 
-                        if (keys.format?.includes('date')) {
-                            value = FormatDate(row[keys.id])
-                        }
+                        let actionRow: boolean = !!actionColumns && (actionColumns === indexKeys + 1);
 
-                        if (keys.viewAttribute) {
-                            value = ViewAttribute(row[keys.id], keys.viewAttribute);
-                        }
-
-
-                        if (keys.viewAttributeBoolean) {
-                            value = ViewAttributeBoolean(row[keys.id], keys.viewAttributeBoolean);
-                        }
+                        let value: string = formatValues(keys, row[keys.id], row);
 
                         if (editable && index === newValue.index) {
                             return (
-                                <TableCell component="th" scope="row" key={`TableRow-${index} - TableCell${indexKeys}`}>
+                                <TableCellComponent key={`TableRow-${index} - TableCell${indexKeys}`} index={index}>
                                     <TextField fullWidth id={`InputTableRow-${index} - InputTableCell${indexKeys}`} defaultValue={value} name={keys.id} onChange={(data: ChangeEvent<HTMLInputElement>) => onChange(data, index)} />
-                                </TableCell>
+                                </TableCellComponent>
                             );
                         }
 
                         return (
-                            <TableCell component="th" scope="row" key={`TableRow-${index} - TableCell${indexKeys}`}>
+                            <TableCellComponent key={`TableRow-${index} - TableCell${indexKeys}`} index={index}>
                                 {actionRow ? <Button onClick={() => handleClick(ACTION, row, index)}>{value}</Button> : value}
-                            </TableCell>
+                            </TableCellComponent>
                         );
                     })}
 
                     {action && (
-                        <TableCell component="th" scope="row" key={`TableRowAction-${index}`} width={80}>
-                            {(!noActionDelete && (index !== newValue.index)) &&
-                                <ActionButton title="Deletar" left={0}>
-                                    <Delete fontSize="small" color="primary" onClick={() => handleClick(ACTION_DELETE, row, index)} />
-                                </ActionButton>
-                            }
+                        <TableCellComponent key={`TableRowAction-${index}`} width={80} index={index}>
 
-                            {(!noActionEdit && (index !== newValue.index)) &&
-                                <ActionButton title="Editar">
-                                    <Create fontSize="small" color="primary" onClick={() => handleClick(ACTION_EDIT, row, index)} />
-                                </ActionButton>
-                            }
+                            <ActionButton title="Deletar" left={0} view={!noActionDelete && (index !== newValue.index)}>
+                                <Delete fontSize="small" color="primary" onClick={() => handleClick(ACTION_DELETE, row, index)} />
+                            </ActionButton>
 
-                            {(!noActionView && (index !== newValue.index)) &&
-                                <ActionButton title="Visualizar">
-                                    <VisibilitySharp fontSize="small" color="primary" onClick={() => handleClick(ACTION_VIEW, row, index)} />
-                                </ActionButton>
-                            }
+                            <ActionButton title="Editar" view={!noActionEdit && (index !== newValue.index)}>
+                                <Create fontSize="small" color="primary" onClick={() => handleClick(ACTION_EDIT, row, index)} />
+                            </ActionButton>
 
-                            {index === newValue.index &&
-                                <ActionButton title="Concluir">
-                                    <Done fontSize="default" color="primary" onClick={() => closeEdit()} />
-                                </ActionButton>
-                            }
+                            <ActionButton title="Visualizar" view={!noActionView && (index !== newValue.index)}>
+                                <VisibilitySharp fontSize="small" color="primary" onClick={() => handleClick(ACTION_VIEW, row, index)} />
+                            </ActionButton>
 
-                            {index === newValue.index &&
-                                <ActionButton title="Cancelar">
-                                    <Close fontSize="default" color="primary" onClick={() => cancelEdit()} />
-                                </ActionButton>
-                            }
-                        </TableCell>
+                            <ActionButton title="Concluir" view={index === newValue.index}>
+                                <Done fontSize="default" color="primary" onClick={() => closeEdit()} />
+                            </ActionButton>
+
+                            <ActionButton title="Cancelar" view={index === newValue.index}>
+                                <Close fontSize="default" color="primary" onClick={() => cancelEdit()} />
+                            </ActionButton>
+
+                        </TableCellComponent>
                     )}
                 </TableRow>
             ))}

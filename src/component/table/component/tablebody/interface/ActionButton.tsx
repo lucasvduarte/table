@@ -4,4 +4,5 @@ export interface ActionButtonInterface {
     title?: string;
     children?: ReactNode;
     left?: number;
+    view?: boolean;
 } 
